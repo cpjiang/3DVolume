@@ -12,6 +12,11 @@ public class C_Tool extends PlugInTool {
 	public static final int GREEN = 1;
 	public static final int BLUE = 3;
 	public static final int GREY = 2;
+	
+	//public void run(java.lang.String arg) {
+		//IJ.open("/Users/CharlieJiang/eclipse-workspace/3DVolume/data/20181113 613 corn oil P3 sac P30_63x_ES.lsm");
+		//IJ.open("/Users/CharlieJiang/eclipse-workspace/3DVolume/data/20181113 614 corn oil P3 sac P30_63x_ES.lsm");
+	//}
 
 	public void mousePressed(ImagePlus imp, MouseEvent e) {
 		IJ.log("mousepressed: "+e);
