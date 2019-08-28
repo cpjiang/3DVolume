@@ -1,0 +1,74 @@
+// Prototype plugin tool. There are more plugin tools at
+// http://imagej.nih.gov/ij/plugins/index.html#tools
+import ij.*;
+import ij.process.*;
+import ij.gui.*;
+import java.awt.*;
+import ij.plugin.tool.PlugInTool;
+import java.awt.event.*;
+
+public class C_Tool extends PlugInTool {
+	public static final int RED = 4;
+	public static final int GREEN = 1;
+	public static final int BLUE = 3;
+	public static final int GREY = 2;
+	public int CELL_COUNTER = 0;
+	
+	public int xbase = 0;
+	public int ybase = 0'
+	public int width = 0;
+	public int height = 0;
+	
+	getSelectionBounds(xbase, ybase, width, height); //Get picture dimensions
+	int ROI[][] = newArray[width+1][height+1]; //Create matrix with dimensions of picture 
+
+	public void mousePressed(ImagePlus imp, MouseEvent e) { //Detect mouse click
+		IJ.log("mousepressed: "+e);
+		int imgX = imp.getCanvas().offScreenX(e.getX());
+		int imgY = imp.getCanvas().offScreenY(e.getY());
+		showXY(imgX, imgY);
+	}
+
+	public void mouseDragged(ImagePlus imp, MouseEvent e) {
+		IJ.log("mouse dragged: "+e);
+	}
+
+	public void showOptionsDialog() {
+		IJ.log("icon double-clicked");
+		showStackInfo();
+	}
+	
+	public void showXY(int x, int y) {
+		IJ.log("X = " + x + " Y = " + y + "\n");
+		tryout(x, y);
+	}
+	
+	public void showStackInfo() {
+		ImagePlus imagePlus = IJ.getImage();
+		int dimentions[] = imagePlus.getDimensions();
+		IJ.log("Dimentions = (width = " + dimentions[0]
+				+ ", height = " + dimentions[1]
+				+ ", channels = " + dimentions[2]
+				+ ", slices = " + dimentions[3]
+				+ ", frames = " + dimentions[4]
+				+ ")\n");
+	}
+	public void tryout(int x, int y) {
+		ImagePlus imagePlus = IJ.getImage();
+		ImageStack imageStack = imagePlus.getImageStack();
+		int currentSlice = imagePlus.getSlice();
+		
+		if(getPixel(x, y) == 1) //Detected green pixel, mark matrix point as unimportant
+			ROI[x][y] = 0;
+		else{
+			ROI[x][y] = 1; //Detected other pixel, mark matrix point as important
+			
+			tryout(x,y+1); //Run detection algorithm recursively on all adjacent pixels
+			tryout(x,y-1);
+			tryout(x+1,y);
+			tryout(x-1,y);
+		}
+			
+	}
+	
+}
